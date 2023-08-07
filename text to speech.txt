@@ -1,0 +1,148 @@
+--------------------html------------------------------
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
+  <title>text to speech conveter</title>
+</head>
+
+<body>
+  <div class="hero">
+    <h1>Text to Speech <span>converter</span></h1>
+    <textarea placeholder="Write anything here....."></textarea>
+    <div class="rows">
+      <select></select>
+      <button>
+        <i class="fa-solid fa-play"></i>Listen
+      </button>
+    </div>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
+
+
+
+
+-------------------------------------css----------------------------------------
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "poppins", "sans-serif";
+  box-sizing: border-box;
+}
+
+/* backround mate*/
+.hero {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(65deg, rgb(15, 0, 8), rgb(245, 69, 163));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: rgb(242, 194, 219);
+}
+
+.hero h1 {
+  font-size: 45px;
+  font-weight: 500;
+  margin-top: -50px;
+  margin-bottom: 50px;
+
+}
+
+.hero h1 span {
+  color: rgb(34, 1, 24);
+}
+
+textarea {
+  width: 600px;
+  height: 250px;
+  background: rgb(124, 41, 81);
+  color: rgb(224, 165, 196);
+  font-size: 15px;
+  border: 0;
+  outline: 0;
+  padding: 20px;
+  border-radius: 10px;
+  resize: none;
+  margin-bottom: 30px;
+}
+
+textarea::placeholder {
+  font-size: 16px;
+  color: rgb(235, 196, 220);
+}
+
+.rows {
+  width: 600px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+button {
+  background: rgb(62, 5, 32);
+  color: rgb(233, 140, 172);
+  font-size: 18px;
+  padding: 5px 20px;
+  border-radius: 35px;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+}
+
+i {
+  padding: 10px;
+}
+
+select {
+  flex: 1;
+  color: rgb(72, 2, 24);
+  background: rgb(240, 113, 179);
+  height: 30px;
+  padding: 0 20px;
+  outline: 0;
+  border: 0;
+  border-radius: 35px;
+}
+
+
+
+----------------------------javascipt------------------
+
+/* bydefalt voice lava mate aa  firt line and direct niche*/
+let speech = new SpeechSynthesisUtterance();
+
+/* multiple voice drop down ma lavva mate*/
+let voices = [];
+
+let voiceSelect = document.querySelector("select");
+
+window.speechSynthesis.onvoiceschanged = () => {
+  voices = window.speechSynthesis.getVoices();
+  speech.voice = voices[0];
+
+  voices.forEach((voice, j) => (voiceSelect.options[j] = new Option(voice.name, j)));
+};
+
+voiceSelect.addEventListener("change", () => {
+  speech.voice = voices[voiceSelect.value];
+});
+
+
+/*bydefult voice mate niche no chode*/
+
+document.querySelector("button").addEventListener("click", () => {
+  speech.text = document.querySelector("textarea").value;
+  window.speechSynthesis.speak(speech);
+});
